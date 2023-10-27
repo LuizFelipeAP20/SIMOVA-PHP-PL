@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Apontamentos</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    {% include 'layout/navbar.html' %}
+
+    <main class="col-sm-9 ml-sm-auto col-md-10" role="main">
+      {% include 'layout/sidebar.html' %}
+
+      <div class="row mt-4">
+        <div class="col-md-6 col-sm-12">
+          <h2>Apontamentos</h2>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <!-- CHAMA MODAL PARA ADICIONAR UM NOVO APONTAMENTO -->
+          <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#newCategoryModal">
+            NOVO APONTAMENTO
+          </button>
+         <!-- CHAMA MODAL PARA ADICIONAR UMA NOVO FUNCIONARIO-->
+          <button type="button" style = 'margin-right:10px; ' class="btn btn-success float-right" data-toggle="modal" data-target="#newFuncionarioModal">
+            NOVO FUNCIONARIO
+          </button>
+        </div>
+      </div>
+      <hr>
+      <table class="table table-bordered">
+        <thead class="thead-default">
+        <tr>
+          <th>#</th>
+          <th>Descrição do Trabalho</th>
+          <th>Nome</th>
+          <th>Alterar</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if appointment is iterable %}
+          {% for appoint in appointment %}
+            <tr>
+              <td>{{ appoint.id }}</td>
+              <td>{{ appoint.description_work }}</td>
+              <td>{{ appoint.name }}</td>
+              <td><div class="col-md-6 col-sm-12">
+          <!-- CHAMA MODAL PARA ALTERAR -->
+          <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#alterarDescModal">
+            ALTERAR
+          </button>
+        </div></td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <p class="text-secondary">Sem apontamentos registrados</p>
+        {% endif %}
+        </tbody>
+      </table>
+    </main>
+  </div>
+<!-- MODAL NOVO APONTAMENTO -->
+  <div class="modal fade" id="newCategoryModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form action="/appointment/new" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">NOVO APONTAMENTO</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label>Descrição do Trabalho:</label>
+              <input type="text" name="description_work" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Funcionario(Código):</label>
+              <input type="number" name="id_employe">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-primary">Criar Apontamento</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- MODAL NOVO FUNCIONARIO -->
+  <div class="modal fade" id="newFuncionarioModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form action="/employee/new" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">NOVO FUNCIONARIO</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label>Nome:</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Funcionario(Código):</label>
+              <input type="number" name="code">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-primary">Criar Funcionario</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- MODAL ALTERAR DESCRIÇÃO -->
+  <div class="modal fade" id="alterarDescModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form action="/appointment/update" method="POST">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">ALTERAR APONTAMENTO</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          
+            <div class="form-group">
+              <label>Descrição:</label>
+              <input type="text" name="description_work" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Funcionario(Código):</label>
+              <input type="number" name="id_employe">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="js/jquery-3.2.1.slim.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
